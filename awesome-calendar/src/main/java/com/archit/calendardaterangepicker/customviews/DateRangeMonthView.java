@@ -274,7 +274,7 @@ class DateRangeMonthView extends LinearLayout {
             if (type == DateRangeCalendarManager.RANGE_TYPE.START_DATE || type == DateRangeCalendarManager.RANGE_TYPE.LAST_DATE) {
                 makeAsSelectedDate(container, type);
             } else if (type == DateRangeCalendarManager.RANGE_TYPE.MIDDLE_DATE) {
-                makeAsRangeDate(container);
+                makeAsRangeDate(container, calendar);
             } else {
                 enabledDayContainer(container);
             }
@@ -371,9 +371,9 @@ class DateRangeMonthView extends LinearLayout {
      *
      * @param container - Container
      */
-    private void makeAsRangeDate(DayContainer container) {
+    private void makeAsRangeDate(DayContainer container, Calendar calendar) {
         container.tvDate.setBackgroundColor(Color.TRANSPARENT);
-        Drawable mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg);
+        Drawable mDrawable = getDayContainerDrawable(calendar);
         mDrawable.setColorFilter(new PorterDuffColorFilter(calendarStyleAttr.getRangeStripColor(), FILTER_MODE));
         container.strip.setBackground(mDrawable);
         container.rootView.setBackgroundColor(Color.TRANSPARENT);
@@ -385,6 +385,38 @@ class DateRangeMonthView extends LinearLayout {
         container.rootView.setOnClickListener(dayClickListener);
     }
 
+    private Drawable getDayContainerDrawable(Calendar calendar) {
+        Drawable mDrawable;
+        if (checkIsFirstDayOfWeek(calendar) || checkIsFirstDayOfMonth(calendar)) {
+            mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg_left);
+        } else if (checkIsLastDayOfWeek(calendar) || checkIsLastDayOfMonth(calendar)) {
+            mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg_right);
+        } else {
+            mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg);
+        }
+        return mDrawable;
+    }
+
+    private boolean checkIsFirstDayOfWeek(Calendar calendar) {
+        return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY + calendarStyleAttr.getWeekOffset();
+    }
+
+    private boolean checkIsLastDayOfWeek(Calendar calendar) {
+        int weekOffset = calendarStyleAttr.getWeekOffset();
+        if (weekOffset == 0) {
+            return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY;
+        } else {
+            return calendar.get(Calendar.DAY_OF_WEEK) == (Calendar.SATURDAY + calendarStyleAttr.getWeekOffset()) % 7;
+        }
+    }
+
+    private boolean checkIsFirstDayOfMonth(Calendar calendar) {
+        return calendar.get(Calendar.DAY_OF_MONTH) == 1;
+    }
+
+    private boolean checkIsLastDayOfMonth(Calendar calendar) {
+        return calendar.get(Calendar.DAY_OF_MONTH) == calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
 
     /**
      * To remove all selection and redraw current calendar
