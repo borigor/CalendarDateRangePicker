@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cdrp_mon">Пн</string>
+    <string name="cdrp_tue">Вт</string>
+    <string name="cdrp_wed">Ср</string>
+    <string name="cdrp_thu">Чт</string>
+    <string name="cdrp_fri">Пт</string>
+    <string name="cdrp_sat">Сб</string>
+    <string name="cdrp_sun">Вс</string>
+
+    <string name="cancel">Отмена</string>
+    <string name="done">Приянть</string>
+    <string name="title_time_picker">Выбор времени</string>
+    <string name="select_time">Выберите время</string>
+</resources>
