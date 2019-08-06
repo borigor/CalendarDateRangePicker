@@ -170,6 +170,7 @@ public class DateRangeCalendarView extends LinearLayout {
 
         Calendar currentCalendarMonth = monthDataList.get(position);
         String yearTitle = titleDateFormat.format(new Date(currentCalendarMonth.getTimeInMillis()));
+        yearTitle = yearTitle.substring(0,1).toUpperCase() + yearTitle.substring(1);
 
         tvYearTitle.setText(yearTitle);
         tvYearTitle.setTextColor(calendarStyleAttr.getTitleColor());
