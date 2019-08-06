@@ -14,6 +14,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -337,6 +338,9 @@ class DateRangeMonthView extends LinearLayout {
     private void makeAsSelectedDate(DayContainer container, @DateRangeCalendarManager.RANGE_TYPE int stripType) {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) container.strip.getLayoutParams();
 
+        container.rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int width = container.rootView.getMeasuredWidth();
+
         Calendar minDate = dateRangeCalendarManager.getMinSelectedDate();
         Calendar maxDate = dateRangeCalendarManager.getMaxSelectedDate();
 
@@ -346,12 +350,12 @@ class DateRangeMonthView extends LinearLayout {
             mDrawable.setColorFilter(new PorterDuffColorFilter(calendarStyleAttr.getRangeStripColor(), FILTER_MODE));
 
             container.strip.setBackground(mDrawable);
-            layoutParams.setMargins(20, 0, 0, 0);
+            layoutParams.setMargins(width / 2, 0, 0, 0);
         } else if (stripType == DateRangeCalendarManager.RANGE_TYPE.LAST_DATE) {
             Drawable mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg_right);
             mDrawable.setColorFilter(new PorterDuffColorFilter(calendarStyleAttr.getRangeStripColor(), FILTER_MODE));
             container.strip.setBackground(mDrawable);
-            layoutParams.setMargins(0, 0, 20, 0);
+            layoutParams.setMargins(0, 0, width / 2, 0);
         } else {
             container.strip.setBackgroundColor(Color.TRANSPARENT);
             layoutParams.setMargins(0, 0, 0, 0);
