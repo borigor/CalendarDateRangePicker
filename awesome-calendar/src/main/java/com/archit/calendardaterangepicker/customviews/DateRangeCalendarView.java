@@ -17,9 +17,11 @@ import android.widget.RelativeLayout;
 import com.archit.calendardaterangepicker.R;
 import com.archit.calendardaterangepicker.models.CalendarStyleAttr;
 
-import java.text.DateFormatSymbols;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,13 +39,14 @@ public class DateRangeCalendarView extends LinearLayout {
 
     private AdapterEventCalendarMonths adapterEventCalendarMonths;
     private Locale locale;
+    private DateFormat titleDateFormat;
 
     private ViewPager vpCalendar;
     private CalendarStyleAttr calendarStyleAttr;
     private CalendarListener mCalendarListener;
 
-
     private final static int TOTAL_ALLOWED_MONTHS = 30;
+    private final static String TITLE_DATE_FORMAT_PATTERN = "LLLL yyyy";
 
     public DateRangeCalendarView(Context context) {
         super(context);
@@ -63,6 +66,7 @@ public class DateRangeCalendarView extends LinearLayout {
     private void initViews(Context context, AttributeSet attrs) {
 
         locale = context.getResources().getConfiguration().locale;
+        titleDateFormat = new SimpleDateFormat(TITLE_DATE_FORMAT_PATTERN, locale);
         calendarStyleAttr = new CalendarStyleAttr(context, attrs);
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -165,14 +169,10 @@ public class DateRangeCalendarView extends LinearLayout {
     private void setCalendarYearTitle(int position) {
 
         Calendar currentCalendarMonth = monthDataList.get(position);
-        String dateText = new DateFormatSymbols(locale).getMonths()[currentCalendarMonth.get(Calendar.MONTH)];
-        dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length());
-
-        String yearTitle = dateText + " " + currentCalendarMonth.get(Calendar.YEAR);
+        String yearTitle = titleDateFormat.format(new Date(currentCalendarMonth.getTimeInMillis()));
 
         tvYearTitle.setText(yearTitle);
         tvYearTitle.setTextColor(calendarStyleAttr.getTitleColor());
-
     }
 
     /**
