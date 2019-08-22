@@ -9,7 +9,7 @@
     <string name="cdrp_sun">Вс</string>
 
     <string name="cancel">Отмена</string>
-    <string name="done">Приянть</string>
+    <string name="done">Принять</string>
     <string name="title_time_picker">Выбор времени</string>
     <string name="select_time">Выберите время</string>
 </resources>
